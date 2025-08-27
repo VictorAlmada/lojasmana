@@ -45,5 +45,5 @@ public class ProdutoService {
         return produtoRepository.findByNomeContainingIgnoreCase(nome)
                 .stream().map(produtoMapper::toDTO).toList();
     }
-    
+
 }
