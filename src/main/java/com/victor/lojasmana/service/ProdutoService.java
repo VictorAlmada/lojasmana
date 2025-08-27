@@ -40,5 +40,10 @@ public class ProdutoService {
         produtoRepository.deleteById(id);
     }
 
-
+    // método de buscar por nome
+    public List<ProdutoDTO> buscarPorNome(String nome) {
+        return produtoRepository.findByNomeContainingIgnoreCase(nome)
+                .stream().map(produtoMapper::toDTO).toList();
+    }
+    
 }
