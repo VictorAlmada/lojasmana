@@ -3,7 +3,9 @@ package com.victor.lojasmana.service;
 import com.victor.lojasmana.dto.ProdutoDTO;
 import com.victor.lojasmana.mapper.ProdutoMapper;
 
+import com.victor.lojasmana.model.Categoria;
 import com.victor.lojasmana.model.Produto;
+import com.victor.lojasmana.repository.CategoriaRepository;
 import com.victor.lojasmana.repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.List;
 public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
+    private final CategoriaRepository categoriaRepository;
     private final ProdutoMapper produtoMapper;
 
     public List<ProdutoDTO> listarTodos() {
@@ -46,4 +49,25 @@ public class ProdutoService {
                 .stream().map(produtoMapper::toDTO).toList();
     }
 
+    // método de atualizar
+    public ProdutoDTO atualizar(Long id, ProdutoDTO dto) {
+        // Verifica se o produto existe
+        Produto produtoExistente = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+
+        // Atualiza os campos
+        produtoExistente.setNome(dto.getNome());
+        produtoExistente.setPreco(dto.getPreco());
+
+        // Atualiza a categoria associada
+        Categoria categoria = categoriaRepository.findById(dto.getCategoria().getId())
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada."));
+        produtoExistente.setCategoria(categoria);
+
+        // Salva as alterações
+        Produto atualizado = produtoRepository.save(produtoExistente);
+
+        // Retorna o DTO atualizado
+        return produtoMapper.toDTO(atualizado);
+    }
 }

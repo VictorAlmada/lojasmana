@@ -19,18 +19,18 @@ public class CategoriaController {
     @GetMapping("/categorias")
     public String listarCategorias(Model model) {
         model.addAttribute("categorias", categoriaService.listarTodas());
-        return "categoria/lista";
+        return "categorias/lista";
     }
 
     // Exibir formulário de cadastro
     @GetMapping("/categorias/nova")
     public String mostrarFormulario(Model model) {
         model.addAttribute("categoria", new CategoriaDTO());
-        return "categoria/form";
+        return "categorias/form";
     }
 
     // Salvar categoria
-    @PostMapping("/categorias")
+    @PostMapping("/categorias/nova")
     public String salvarCategoria(@ModelAttribute("categoria") CategoriaDTO categoriaDTO) {
         categoriaService.salvar(categoriaDTO);
         return "redirect:/categorias";

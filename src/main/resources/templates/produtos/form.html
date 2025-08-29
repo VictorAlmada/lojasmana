@@ -7,7 +7,11 @@
 <body>
 <h1>Cadastrar Novo Produto</h1>
 
-<form th:action="@{/produtos}" th:object="${produto}" method="post">
+<!-- Formulário para criar ou editar um produto -->
+<!-- Se o produto tiver um ID, o formulário será para edição; caso contrário, para criação -->
+
+<form th:action="${produto.id != null} ? @{'/produtos/editar' + ${produto.id}} : @{/produtos/novo}"
+      th:object="${produto}" method="post">
 
     <label for="nome">Nome:</label>
     <input type="text" id="nome" th:field="*{nome}" required>
@@ -29,7 +33,7 @@
     <select id="categoria" th:field="*{categoria.id}">
         <option th:each="cat : ${categorias}"
                 th:value="${cat.id}"
-                th:text="${cat.nome">
+                th:text="${cat.nome}">
         </option>
     </select>
     <br/>

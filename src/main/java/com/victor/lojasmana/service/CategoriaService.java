@@ -21,7 +21,7 @@ public class CategoriaService {
                 .stream().map(categoriaMapper::toDTO).toList();
     }
 
-    public CategoriaDTO buscarPòrId(Long id) {
+    public CategoriaDTO buscarPorId(Long id) {
         Categoria categoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada."));
         return categoriaMapper.toDTO(categoria);
@@ -29,6 +29,7 @@ public class CategoriaService {
 
     public CategoriaDTO salvar(CategoriaDTO dto) {
         Categoria categoria = categoriaMapper.toEntity(dto);
+        categoria.setNome(dto.getNome());
         return categoriaMapper.toDTO(categoriaRepository.save(categoria));
     }
 
